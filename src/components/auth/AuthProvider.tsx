@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .then((res) => {
         localStorage.setItem("jwt", res.token);
         profile().then((res) => setUser(res));
+        window.location.href = "/dashboard";
       })
       .catch(() => setUser(undefined));
   };
