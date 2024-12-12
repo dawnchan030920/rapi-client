@@ -1,7 +1,7 @@
 import { z } from "zod";
 import client from "../client";
 import { ID, idSchema } from "../schema/id";
-import { grpcEndpointSchema } from "../schema/grpcEndpoint";
+import { grpcEndpointSchema } from "./grpcEndpoint";
 
 const grpcEndpointDetailResponse = z
   .object({

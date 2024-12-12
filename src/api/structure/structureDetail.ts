@@ -1,7 +1,7 @@
 import { z } from "zod";
 import client from "../client";
 import { ID, idSchema } from "../schema/id";
-import { structureSchema } from "../schema/structure";
+import { structureSchema } from "./structure";
 
 const structureDetailResponse = z
   .object({

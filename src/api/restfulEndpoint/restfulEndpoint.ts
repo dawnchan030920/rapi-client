@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { httpMethodSchema } from "./httpMethod";
-import { rapiSchemaSchema } from "./schema";
+import { httpMethodSchema } from "../schema/httpMethod";
+import { rapiSchemaSchema } from "../schema/schema";
 
 const restfulEndpointSchema = z.object({
   name: z.string(),

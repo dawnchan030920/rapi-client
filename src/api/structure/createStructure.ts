@@ -1,7 +1,7 @@
 import { z } from "zod";
 import client from "../client";
 import { ID, idSchema } from "../schema/id";
-import { structureSchema } from "../schema/structure";
+import { structureSchema } from "./structure";
 
 const createStructureRequest = structureSchema.pick({
   name: true,
@@ -9,11 +9,11 @@ const createStructureRequest = structureSchema.pick({
 
 type CreateStructureRequest = z.infer<typeof createStructureRequest>;
 
-const createStructureResponseSchema = z.object({
+const createStructureResponse = z.object({
   id: idSchema,
 });
 
-type CreateStructureResponse = z.infer<typeof createStructureResponseSchema>;
+type CreateStructureResponse = z.infer<typeof createStructureResponse>;
 
 export default async function createStructure(
   projectId: ID,
@@ -25,5 +25,5 @@ export default async function createStructure(
     `/project/${projectId}/structure`,
     request
   );
-  return createStructureResponseSchema.parse(response.data);
+  return createStructureResponse.parse(response.data);
 }

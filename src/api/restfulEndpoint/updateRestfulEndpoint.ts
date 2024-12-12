@@ -1,7 +1,7 @@
 import { z } from "zod";
 import client from "../client";
 import { ID, idSchema } from "../schema/id";
-import { restfulEndpointSchema } from "../schema/restfulEndpoint";
+import { restfulEndpointSchema } from "./restfulEndpoint";
 
 const updateRestfulEndpointRequest = z
   .object({

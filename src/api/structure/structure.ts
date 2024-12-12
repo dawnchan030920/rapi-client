@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { rapiSchemaSchema } from "./schema";
+import { rapiSchemaSchema } from "../schema/schema";
 
 const structureSchema = z.object({
   name: z.string(),
