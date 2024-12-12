@@ -53,7 +53,7 @@ export default function SchemaEditor({
       ) : schema.type === "list" ? (
         <ListEditor item={schema.item} onSchemaChange={onSchemaChange} />
       ) : schema.type === "ref" ? (
-        <RefEditor ref={schema.ref} onSchemaChange={onSchemaChange} />
+        <RefEditor reference={schema.ref} onSchemaChange={onSchemaChange} />
       ) : null}
     </>
   );

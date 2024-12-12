@@ -31,7 +31,14 @@ export default function StructureRefPicker({
   }, [refId]);
 
   return (
-    <Select onValueChange={(value) => onRefChanged(value)}>
+    <Select
+      onValueChange={(value) => onRefChanged(value)}
+      value={
+        structures.map((struct) => struct.id).includes(refId)
+          ? refId
+          : undefined
+      }
+    >
       <SelectTrigger>
         <SelectValue placeholder="Select a structure" />
       </SelectTrigger>
