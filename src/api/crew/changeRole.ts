@@ -1,6 +1,7 @@
 import { z } from "zod";
 import client from "../client";
 import { ID } from "../schema/id";
+
 const changeRoleRequest = z.object({
   action: z.enum(["promote", "demote"]),
 });
