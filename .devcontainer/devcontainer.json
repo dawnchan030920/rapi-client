@@ -16,7 +16,8 @@
         "dbaeumer.vscode-eslint",
         "GitHub.copilot",
         "GitHub.copilot-chat",
-        "bradlc.vscode-tailwindcss"
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.js-debug-nightly"
       ]
     }
 },
