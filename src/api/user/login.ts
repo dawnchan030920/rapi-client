@@ -15,6 +15,6 @@ type LoginResponse = z.infer<typeof loginResponse>;
 export default async function login(
   data: LoginRequest
 ): Promise<LoginResponse> {
-  const response = await client.post("/login", data);
+  const response = await client.post("/auth/login", data);
   return loginResponse.parse(response.data);
 }

@@ -14,6 +14,6 @@ type RegisterResponse = z.infer<typeof registerResponse>;
 export default async function register(
   data: RegisterRequest
 ): Promise<RegisterResponse> {
-  const response = await client.post("/register", data);
+  const response = await client.post("/auth/register", data);
   return registerResponse.parse(response.data);
 }
