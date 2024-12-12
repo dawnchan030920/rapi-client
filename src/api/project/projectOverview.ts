@@ -7,8 +7,6 @@ const restfulEndpointSchema = z.object({
   id: idSchema,
   name: z.string(),
   httpMethod: httpMethodSchema,
-  path: z.string(),
-  state: z.string(),
 });
 
 const grpcEndpointSchema = z.object({
@@ -24,7 +22,7 @@ const structureSchema = z.object({
 
 const groupSchema = z.object({
   id: idSchema,
-  type: z.string(),
+  type: z.enum(["JWT", "CRUD"]),
   endpoints: z.array(restfulEndpointSchema),
 });
 
