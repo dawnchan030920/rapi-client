@@ -40,6 +40,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
+import { Dialog, DialogTrigger } from "../ui/dialog";
+import CreateApiDialogContent from "./createApiDialogContent/CreateApiDialogContent";
+import { useState } from "react";
 
 type RestfulEndpointOverview = {
   id: ID;
@@ -83,6 +86,11 @@ export default function Project({
   groups,
   crew,
   states,
+  createRestfulEndpoint,
+  createGrpcEndpoint,
+  createCrudGroup,
+  createStructure,
+  createJwtGroup,
 }: {
   grpcEndpoints: GrpcEndpointOverview[];
   restfulEndpoints: RestfulEndpointOverview[];
@@ -90,45 +98,139 @@ export default function Project({
   groups: GroupOverview[];
   crew: CrewOverview[];
   states: StateOverview[];
+  createRestfulEndpoint: (
+    name: string,
+    httpMethod: string,
+    description: string
+  ) => void;
+  createGrpcEndpoint: (
+    name: string,
+    service: string,
+    description: string,
+    isParamStream: boolean,
+    isResultStream: boolean
+  ) => void;
+  createCrudGroup: (sourceStructure: ID) => void;
+  createStructure: (name: string) => void;
+  createJwtGroup: () => void;
 }) {
+  const [createApiDialogProps, setCreateApiDialogProps] = useState<{
+    api:
+      | {
+          type: "REST";
+          createRestfulEndpoint: (
+            name: string,
+            httpMethod: string,
+            description: string
+          ) => void;
+        }
+      | {
+          type: "GRPC";
+          createGrpcEndpoint: (
+            name: string,
+            service: string,
+            description: string,
+            isParamStream: boolean,
+            isResultStream: boolean
+          ) => void;
+        }
+      | { type: "CRUD"; createCrudGroup: (sourceStructure: ID) => void }
+      | { type: "STRUCTURE"; createStructure: (name: string) => void };
+  } | null>(null);
   return (
     <SidebarProvider>
       <Sidebar>
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>API</SidebarGroupLabel>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarGroupAction title="Add API">
-                  <Plus />
-                </SidebarGroupAction>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="right" align="start">
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <span>CRUD</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <span>JWT</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <span>RESTful</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <span>gRPC</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <span>Structure</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Dialog>
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <SidebarGroupAction title="Add API">
+                    <Plus />
+                  </SidebarGroupAction>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent side="right" align="start">
+                  <DropdownMenuGroup>
+                    <DialogTrigger asChild>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setCreateApiDialogProps({
+                            api: {
+                              type: "CRUD",
+                              createCrudGroup,
+                            },
+                          });
+                        }}
+                      >
+                        <span>CRUD</span>
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+
+                    <DropdownMenuItem
+                      onClick={() => {
+                        createJwtGroup();
+                      }}
+                    >
+                      <span>JWT</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DialogTrigger asChild>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setCreateApiDialogProps({
+                            api: {
+                              type: "REST",
+                              createRestfulEndpoint,
+                            },
+                          });
+                        }}
+                      >
+                        <span>RESTful</span>
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+
+                    <DialogTrigger asChild>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setCreateApiDialogProps({
+                            api: {
+                              type: "GRPC",
+                              createGrpcEndpoint,
+                            },
+                          });
+                        }}
+                      >
+                        <span>gRPC</span>
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DialogTrigger asChild>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setCreateApiDialogProps({
+                            api: {
+                              type: "STRUCTURE",
+                              createStructure,
+                            },
+                          });
+                        }}
+                      >
+                        <span>Structure</span>
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              {createApiDialogProps && (
+                <CreateApiDialogContent api={createApiDialogProps.api} />
+              )}
+            </Dialog>
+
             <SidebarGroupContent>
               <SidebarMenu>
                 {groups.map((group) => (

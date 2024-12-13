@@ -43,6 +43,21 @@ function App() {
               element={
                 <>
                   <ProjectRender
+                    createCrudGroup={() => {
+                      console.log("createCrudGroup");
+                    }}
+                    createStructure={() => {
+                      console.log("createStructure");
+                    }}
+                    createRestfulEndpoint={() => {
+                      console.log("createRestfulEndpoint");
+                    }}
+                    createGrpcEndpoint={() => {
+                      console.log("createGrpcEndpoint");
+                    }}
+                    createJwtGroup={() => {
+                      console.log("createJwtGroup");
+                    }}
                     grpcEndpoints={[
                       {
                         id: "1",
@@ -79,7 +94,7 @@ function App() {
                             httpMethod: "POST",
                           },
                         ],
-                      }
+                      },
                     ]}
                     structures={[
                       {

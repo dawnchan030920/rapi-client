@@ -8,6 +8,8 @@ import {
   SelectContent,
   SelectItem,
   SelectValue,
+  SelectGroup,
+  SelectLabel,
 } from "@/components/ui/select";
 
 export default function StructurePicker({
@@ -42,11 +44,14 @@ export default function StructurePicker({
         <SelectValue placeholder="Select a structure" />
       </SelectTrigger>
       <SelectContent>
-        {structures.map((structure) => (
-          <SelectItem key={structure.id} value={structure.id}>
-            {structure.name}
-          </SelectItem>
-        ))}
+        <SelectGroup>
+          <SelectLabel>Source Structure</SelectLabel>
+          {structures.map((structure) => (
+            <SelectItem key={structure.id} value={structure.id}>
+              {structure.name}
+            </SelectItem>
+          ))}
+        </SelectGroup>
       </SelectContent>
     </Select>
   );
