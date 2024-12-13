@@ -37,4 +37,9 @@ type RapiSchema =
   | { type: "string" }
   | { type: "number" };
 
-export { type RapiSchema, rapiSchemaSchema };
+type RapiObjectSchema = {
+  type: "object";
+  fields: { key: string; value: RapiSchema }[];
+};
+
+export { type RapiSchema, type RapiObjectSchema, rapiSchemaSchema };
