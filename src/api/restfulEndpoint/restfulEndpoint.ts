@@ -5,6 +5,8 @@ import { rapiSchemaSchema } from "../schema/schema";
 const restfulEndpointSchema = z.object({
   name: z.string(),
   httpMethod: httpMethodSchema,
+  header: rapiSchemaSchema.optional(),
+  query: rapiSchemaSchema.optional(),
   RoutePath: z.array(
     z.union([
       z.object({
