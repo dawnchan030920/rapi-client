@@ -44,6 +44,9 @@ function App() {
                 <>
                   <ProjectRender
                     projectId="1"
+                    addState={(projectId, name) => {
+                      console.log("addState ", name, "to project ", projectId);
+                    }}
                     inviteCrew={(id, email) => {
                       console.log("inviteCrew ", email, "to project ", id);
                     }}

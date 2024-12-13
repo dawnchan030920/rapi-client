@@ -44,6 +44,7 @@ import { Dialog, DialogTrigger } from "../ui/dialog";
 import CreateApiDialogContent from "./createApiDialogContent/CreateApiDialogContent";
 import { useState } from "react";
 import InviteCrewDialogContent from "./InviteCrewDialogContent";
+import AddStateDialogContent from "./AddStateDialogContent";
 
 type RestfulEndpointOverview = {
   id: ID;
@@ -94,6 +95,7 @@ export default function Project({
   createStructure,
   createJwtGroup,
   inviteCrew,
+  addState,
 }: {
   projectId: ID;
   grpcEndpoints: GrpcEndpointOverview[];
@@ -118,6 +120,7 @@ export default function Project({
   createStructure: (name: string) => void;
   createJwtGroup: () => void;
   inviteCrew: (projectId: ID, email: string) => void;
+  addState: (projectId: ID, name: string) => void;
 }) {
   const [createApiDialogProps, setCreateApiDialogProps] = useState<{
     api:
@@ -336,9 +339,18 @@ export default function Project({
 
           <SidebarGroup>
             <SidebarGroupLabel>State</SidebarGroupLabel>
-            <SidebarGroupAction title="Add State">
-              <Plus />
-            </SidebarGroupAction>
+            <Dialog>
+              <DialogTrigger>
+                <SidebarGroupAction title="Add State">
+                  <Plus />
+                </SidebarGroupAction>
+              </DialogTrigger>
+              <AddStateDialogContent
+                projectId={projectId}
+                addState={addState}
+              />
+            </Dialog>
+
             <SidebarGroupContent>
               <SidebarMenu>
                 {states.map((state) => (
