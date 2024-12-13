@@ -11,7 +11,9 @@ const allStatesResponse = z.array(
 
 type AllStatesResponse = z.infer<typeof allStatesResponse>;
 
-export const allStates = async (projectId: ID): Promise<AllStatesResponse> => {
+const allStates = async (projectId: ID): Promise<AllStatesResponse> => {
   const response = await client.get(`/project/${projectId}/state`);
   return allStatesResponse.parse(response.data);
 };
+
+export default allStates;
