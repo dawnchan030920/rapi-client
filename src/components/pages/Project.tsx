@@ -43,6 +43,7 @@ import {
 import { Dialog, DialogTrigger } from "../ui/dialog";
 import CreateApiDialogContent from "./createApiDialogContent/CreateApiDialogContent";
 import { useState } from "react";
+import InviteCrewDialogContent from "./InviteCrewDialogContent";
 
 type RestfulEndpointOverview = {
   id: ID;
@@ -80,6 +81,7 @@ type StateOverview = {
 };
 
 export default function Project({
+  projectId,
   grpcEndpoints,
   restfulEndpoints,
   structures,
@@ -91,7 +93,9 @@ export default function Project({
   createCrudGroup,
   createStructure,
   createJwtGroup,
+  inviteCrew,
 }: {
+  projectId: ID;
   grpcEndpoints: GrpcEndpointOverview[];
   restfulEndpoints: RestfulEndpointOverview[];
   structures: StructureOverview[];
@@ -113,6 +117,7 @@ export default function Project({
   createCrudGroup: (sourceStructure: ID) => void;
   createStructure: (name: string) => void;
   createJwtGroup: () => void;
+  inviteCrew: (projectId: ID, email: string) => void;
 }) {
   const [createApiDialogProps, setCreateApiDialogProps] = useState<{
     api:
@@ -302,9 +307,17 @@ export default function Project({
 
           <SidebarGroup>
             <SidebarGroupLabel>Crew</SidebarGroupLabel>
-            <SidebarGroupAction title="Invite Crew">
-              <Plus />
-            </SidebarGroupAction>
+            <Dialog>
+              <DialogTrigger>
+                <SidebarGroupAction title="Invite Crew">
+                  <Plus />
+                </SidebarGroupAction>
+              </DialogTrigger>
+              <InviteCrewDialogContent
+                projectId={projectId}
+                inviteCrew={inviteCrew}
+              />
+            </Dialog>
             <SidebarGroupContent>
               <SidebarMenu>
                 {crew.map((crew) => (

@@ -43,17 +43,45 @@ function App() {
               element={
                 <>
                   <ProjectRender
-                    createCrudGroup={() => {
-                      console.log("createCrudGroup");
+                    projectId="1"
+                    inviteCrew={(id, email) => {
+                      console.log("inviteCrew ", email, "to project ", id);
                     }}
-                    createStructure={() => {
-                      console.log("createStructure");
+                    createCrudGroup={(source) => {
+                      console.log("createCrudGroup for ", source);
                     }}
-                    createRestfulEndpoint={() => {
-                      console.log("createRestfulEndpoint");
+                    createStructure={(name) => {
+                      console.log("createStructure named ", name);
                     }}
-                    createGrpcEndpoint={() => {
-                      console.log("createGrpcEndpoint");
+                    createRestfulEndpoint={(name, method, description) => {
+                      console.log(
+                        "createRestfulEndpoint named ",
+                        name,
+                        " with method ",
+                        method,
+                        " and description ",
+                        description
+                      );
+                    }}
+                    createGrpcEndpoint={(
+                      name,
+                      service,
+                      description,
+                      paramStream,
+                      resultStream
+                    ) => {
+                      console.log(
+                        "createGrpcEndpoint named ",
+                        name,
+                        " with service ",
+                        service,
+                        " and description ",
+                        description,
+                        " with paramStream ",
+                        paramStream,
+                        " and resultStream ",
+                        resultStream
+                      );
                     }}
                     createJwtGroup={() => {
                       console.log("createJwtGroup");
