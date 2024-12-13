@@ -2,10 +2,12 @@ import { z } from "zod";
 import { idSchema } from "../schema/id";
 
 const crudGroupSchema = z.object({
-  sourceStructure: z.object({
-    id: idSchema,
-    name: z.string(),
-  }),
+  sourceStructure: z
+    .object({
+      id: idSchema,
+      name: z.string(),
+    })
+    .optional(),
 });
 
 type CrudGroup = z.infer<typeof crudGroupSchema>;
