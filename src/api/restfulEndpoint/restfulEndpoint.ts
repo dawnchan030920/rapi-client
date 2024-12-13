@@ -7,7 +7,7 @@ const restfulEndpointSchema = z.object({
   httpMethod: httpMethodSchema,
   header: rapiSchemaSchema.optional(),
   query: rapiSchemaSchema.optional(),
-  RoutePath: z.array(
+  routePath: z.array(
     z.union([
       z.object({
         constant: z.string(),
