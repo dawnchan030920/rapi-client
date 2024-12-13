@@ -11,14 +11,15 @@ export default function ObjectEditor({
   onSchemaChange: (schema: RapiSchema) => void;
 }) {
   return (
-    <>
+    <div className="grid gap-2">
       {/**
        * Render the fields of the object
        * Able to add and remove fields
        */}
       {fields.map((field, i) => (
-        <div className="flex" key={i}>
+        <div className="flex gap-2" key={i}>
           <Input
+            className="w-[180px]"
             value={field.key}
             onChange={(key) => {
               onSchemaChange({
@@ -58,6 +59,7 @@ export default function ObjectEditor({
           </Button>
         </div>
       ))}
+      <div className="w-auto">
       <Button
         onClick={() => {
           onSchemaChange({
@@ -68,6 +70,8 @@ export default function ObjectEditor({
       >
         Add
       </Button>
-    </>
+      </div>
+
+    </div>
   );
 }

@@ -32,9 +32,9 @@ export default function SchemaEditor({
   }
 
   return (
-    <>
+    <div className="grid gap-4 w-fit min-w-36">
       <Select onValueChange={onSchemaTypeChanged} value={schema.type}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-auto">
           <SelectValue placeholder="Schema Type" />
         </SelectTrigger>
         <SelectContent>
@@ -55,6 +55,6 @@ export default function SchemaEditor({
       ) : schema.type === "ref" ? (
         <RefEditor reference={schema.ref} onSchemaChange={onSchemaChange} />
       ) : null}
-    </>
+    </div>
   );
 }
