@@ -16,7 +16,7 @@ const restfulEndpointSchema = z.object({
       }),
     ])
   ),
-  request: rapiSchemaSchema,
+  request: rapiSchemaSchema.optional(),
   response: z.array(
     z.object({
       statusCode: z.number().min(100).max(599),
