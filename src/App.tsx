@@ -44,6 +44,38 @@ function App() {
                 <>
                   <ProjectRender
                     projectId="1"
+                    promoteCrew={(projectId, crewId) => {
+                      console.log(
+                        "promoteCrew ",
+                        crewId,
+                        "for project ",
+                        projectId
+                      );
+                    }}
+                    demoteCrew={(projectId, crewId) => {
+                      console.log(
+                        "demoteCrew ",
+                        crewId,
+                        "for project ",
+                        projectId
+                      );
+                    }}
+                    changeDefaultState={(projectId, stateId) => {
+                      console.log(
+                        "changeDefaultState ",
+                        stateId,
+                        "for project ",
+                        projectId
+                      );
+                    }}
+                    removeState={(projectId, stateId) => {
+                      console.log(
+                        "removeState ",
+                        stateId,
+                        "from project ",
+                        projectId
+                      );
+                    }}
                     addState={(projectId, name) => {
                       console.log("addState ", name, "to project ", projectId);
                     }}

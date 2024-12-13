@@ -7,6 +7,7 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -29,11 +30,15 @@ import {
   ChevronRight,
   Cog,
   Fingerprint,
+  MoreHorizontal,
+  Pin,
   Plug,
   Plus,
   SendToBack,
   Tag,
+  Trash2,
   UserRound,
+  UserRoundPen,
 } from "lucide-react";
 import {
   Collapsible,
@@ -96,6 +101,10 @@ export default function Project({
   createJwtGroup,
   inviteCrew,
   addState,
+  removeState,
+  changeDefaultState,
+  promoteCrew,
+  demoteCrew,
 }: {
   projectId: ID;
   grpcEndpoints: GrpcEndpointOverview[];
@@ -121,6 +130,10 @@ export default function Project({
   createJwtGroup: () => void;
   inviteCrew: (projectId: ID, email: string) => void;
   addState: (projectId: ID, name: string) => void;
+  removeState: (projectId: ID, stateId: ID) => void;
+  changeDefaultState: (projectId: ID, stateId: ID) => void;
+  promoteCrew: (projectId: ID, crewId: ID) => void;
+  demoteCrew: (projectId: ID, crewId: ID) => void;
 }) {
   const [createApiDialogProps, setCreateApiDialogProps] = useState<{
     api:
@@ -243,10 +256,11 @@ export default function Project({
               <SidebarMenu>
                 {groups.map((group) => (
                   <Collapsible
+                    key={group.id}
                     defaultOpen={false}
                     className="group/collapsible"
                   >
-                    <SidebarMenuItem key={group.id}>
+                    <SidebarMenuItem>
                       <CollapsibleTrigger asChild>
                         <SidebarMenuButton>
                           <ChevronRight className="transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -329,6 +343,17 @@ export default function Project({
                       {crew.isAdmin ? <Cog /> : <UserRound />}
                       <span>{crew.username}</span>
                     </SidebarMenuButton>
+                    <SidebarMenuAction
+                      onClick={() => {
+                        if (crew.isAdmin) {
+                          demoteCrew(projectId, crew.id);
+                        } else {
+                          promoteCrew(projectId, crew.id);
+                        }
+                      }}
+                    >
+                      <UserRoundPen />
+                    </SidebarMenuAction>
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
@@ -361,6 +386,31 @@ export default function Project({
                     </SidebarMenuButton>
                     {state.isDefault && (
                       <SidebarMenuBadge>Default</SidebarMenuBadge>
+                    )}
+                    {!state.isDefault && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <SidebarMenuAction title="More">
+                            <MoreHorizontal />
+                          </SidebarMenuAction>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent side="right" align="start">
+                          <DropdownMenuItem
+                            onClick={() =>
+                              changeDefaultState(projectId, state.id)
+                            }
+                          >
+                            <Pin />
+                            <span>Set as Default</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => removeState(projectId, state.id)}
+                          >
+                            <Trash2 />
+                            <span>Delete</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     )}
                   </SidebarMenuItem>
                 ))}
