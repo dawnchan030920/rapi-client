@@ -1,9 +1,17 @@
-import { useState, useEffect, ReactNode } from "react";
+import { useState, ReactNode } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { AuthContext, UserProfile } from "./AuthContext";
 import profile from "@/api/user/profile";
 import loginFetch from "@/api/user/login";
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const queryClient = useQueryClient();
   const [user, setUser] = useState<UserProfile | undefined>(undefined);
+
+  useQuery(["profile"], profile, {
+    onSuccess: (data) => setUser(data),
+    onError: () => setUser(undefined),
+  });
 
   const logout = () => {
     setUser(undefined);
@@ -11,21 +19,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     window.location.href = "/login";
   };
 
-  const login = async (username: string, password: string) => {
-    await loginFetch({ username, password })
-      .then((res) => {
-        localStorage.setItem("jwt", res.token);
-        profile().then((res) => setUser(res));
-        window.location.href = "/dashboard";
-      })
-      .catch(() => setUser(undefined));
-  };
+  const loginMutation = useMutation(loginFetch, {
+    onSuccess: (data) => {
+      localStorage.setItem("jwt", data.token);
+      queryClient.invalidateQueries(["profile"]);
+      window.location.href = "/dashboard";
+    },
+    onError: () => setUser(undefined),
+  });
 
-  useEffect(() => {
-    profile()
-      .then((res) => setUser(res))
-      .catch(() => setUser(undefined));
-  }, []);
+  const login = (username: string, password: string) => {
+    loginMutation.mutate({ username, password });
+  };
 
   return (
     <AuthContext.Provider value={{ user, logout, login }}>
