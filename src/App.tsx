@@ -9,6 +9,7 @@ import Project from "./pages/Project";
 import ProjectRender from "./components/pages/Project";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import RestfulEndpointForm from "./components/form/RestfulEndpointForm";
+import GrpcEndpointForm from "./components/form/GrpcEndpointForm";
 
 const queryClient = new QueryClient();
 
@@ -191,7 +192,7 @@ function App() {
                       },
                     ]}
                   /> */}
-                  <RestfulEndpointForm
+                  {/* <RestfulEndpointForm
                     deleteEndpoint={(projectId, endpointId) => {
                       console.log(
                         "deleteEndpoint ",
@@ -255,6 +256,44 @@ function App() {
                     }}
                     projectId="1"
                     endpointId="1"
+                  /> */}
+                  <GrpcEndpointForm
+                    endpoint={{
+                      name: "Test gRPC",
+                      service: "Test Service",
+                      description: "Test Description",
+                      paramStream: false,
+                      resultStream: false,
+                      paramSchema: {
+                        type: "object",
+                        fields: [],
+                      },
+                      resultSchema: {
+                        type: "object",
+                        fields: [],
+                      },
+                    }}
+                    projectId="1"
+                    endpointId="1"
+                    updateEndpoint={(projectId, endpointId, data) => {
+                      console.log(
+                        "updateEndpoint ",
+                        endpointId,
+                        "for project ",
+                        projectId,
+                        " with data ",
+                        data
+                      );
+                    }}
+                    deleteEndpoint={(projectId, endpointId) => {
+                      console.log(
+                        "deleteEndpoint ",
+                        endpointId,
+                        "from project ",
+                        projectId
+                      );
+                    }}
+                    onCanceled={() => {}}
                   />
                 </>
               }
