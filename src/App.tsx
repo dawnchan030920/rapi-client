@@ -8,6 +8,7 @@ import Project from "./pages/Project";
 
 import ProjectRender from "./components/pages/Project";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import RestfulEndpointForm from "./components/form/RestfulEndpointForm";
 
 const queryClient = new QueryClient();
 
@@ -42,7 +43,7 @@ function App() {
               path="/"
               element={
                 <>
-                  <ProjectRender
+                  {/* <ProjectRender
                     projectId="1"
                     promoteCrew={(projectId, crewId) => {
                       console.log(
@@ -189,6 +190,71 @@ function App() {
                         isDefault: false,
                       },
                     ]}
+                  /> */}
+                  <RestfulEndpointForm
+                    deleteEndpoint={(projectId, endpointId) => {
+                      console.log(
+                        "deleteEndpoint ",
+                        endpointId,
+                        "from project ",
+                        projectId
+                      );
+                    }}
+                    updateEndpoint={(projectId, endpointId, data) => {
+                      console.log(
+                        "updateEndpoint ",
+                        endpointId,
+                        "for project ",
+                        projectId,
+                        " with data ",
+                        data
+                      );
+                    }}
+                    onCanceled={() => {}}
+                    endpoint={{
+                      name: "Test RESTful",
+                      httpMethod: "GET",
+                      description: "Test Description",
+                      state: "1",
+                      request: {
+                        type: "object",
+                        fields: [],
+                      },
+                      routePath: [
+                        { constant: "test" },
+                        { name: "test-str", schema: { type: "string" } },
+                      ],
+                      response: [
+                        {
+                          statusCode: 200,
+                          description: "Success",
+                          schema: {
+                            type: "object",
+                            fields: [
+                              {
+                                key: "test",
+                                value: { type: "string" },
+                              },
+                            ],
+                          },
+                        },
+                        {
+                          statusCode: 400,
+                          description: "Bad Request",
+                          schema: {
+                            type: "object",
+                            fields: [
+                              {
+                                key: "error",
+                                value: { type: "string" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    }}
+                    projectId="1"
+                    endpointId="1"
                   />
                 </>
               }
