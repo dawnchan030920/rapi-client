@@ -19,8 +19,8 @@ export default function ProjectGridItem({
   structureCount: number;
   groupCount: number;
 }) {
-  function handleDisband() {
-    disband(id)
+  async function handleDisband() {
+    await disband(id)
       .then(() => window.location.reload())
       .catch(console.error);
   }

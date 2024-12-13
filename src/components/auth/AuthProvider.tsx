@@ -11,8 +11,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     window.location.href = "/login";
   };
 
-  const login = (username: string, password: string) => {
-    loginFetch({ username, password })
+  const login = async (username: string, password: string) => {
+    await loginFetch({ username, password })
       .then((res) => {
         localStorage.setItem("jwt", res.token);
         profile().then((res) => setUser(res));

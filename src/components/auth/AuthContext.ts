@@ -10,11 +10,11 @@ export type UserProfile = {
 export type AuthContextType = {
   user: UserProfile | undefined;
   logout: () => void;
-  login: (username: string, password: string) => void;
+  login: (username: string, password: string) => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType>({
   user: undefined,
   logout: () => {},
-  login: () => {},
+  login: () => Promise.resolve(),
 });
