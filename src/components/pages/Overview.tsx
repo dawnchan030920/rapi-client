@@ -33,7 +33,7 @@ export default function Overview({
     projectId: ID;
     projectName: string;
   }[];
-  joinProject: (projectId: ID, username: string) => Promise<void>;
+  joinProject: (projectId: ID, username: string) => void;
 }) {
   return (
     <div className="flex h-screen w-full p-4">
@@ -57,8 +57,8 @@ export default function Overview({
                     >
                       <SelectLabel>{invitation.projectName}</SelectLabel>
                       <Button
-                        onClick={async () =>
-                          await joinProject(invitation.projectId, username)
+                        onClick={() =>
+                          joinProject(invitation.projectId, username)
                         }
                       >
                         Accept

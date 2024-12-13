@@ -1,6 +1,6 @@
 import { ID } from "@/api/schema/id";
 import { RapiSchema } from "@/api/schema/schema";
-import StructureRefPicker from "../StructureRefPicker";
+import StructurePicker from "../StructurePicker";
 
 export default function RefEditor({
   reference,
@@ -12,9 +12,11 @@ export default function RefEditor({
   console.log("ref editor");
   return (
     <>
-      <StructureRefPicker
-        onRefChanged={(refId) => onSchemaChange({ type: "ref", ref: refId })}
-        refId={reference}
+      <StructurePicker
+        onStructureIdChanged={(reference) =>
+          onSchemaChange({ type: "ref", ref: reference })
+        }
+        structureId={reference}
       />
     </>
   );

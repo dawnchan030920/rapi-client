@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter } from "./ui/card";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import disband from "@/api/project/disband";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function ProjectGridItem({
   id,
@@ -19,13 +20,20 @@ export default function ProjectGridItem({
   structureCount: number;
   groupCount: number;
 }) {
-  async function handleDisband() {
-    await disband(id)
-      .then(() => window.location.reload())
-      .catch(console.error);
-  }
-
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
+
+  const disbandMutation = useMutation({
+    mutationFn: () => disband(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["projects"]);
+      window.location.reload();
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
   return (
     <Card className="w-[360px]">
       <CardContent>
@@ -44,7 +52,7 @@ export default function ProjectGridItem({
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="destructive" onClick={handleDisband}>
+        <Button variant="destructive" onClick={() => disbandMutation.mutate()}>
           Disband
         </Button>
         <Button variant="link" onClick={() => navigate(`/project/${id}`)}>

@@ -1,46 +1,46 @@
 import { useAuth } from "@/components/auth/useAuth";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import projectList from "@/api/project/projectList";
 import { joinProject } from "@/api/crew/joinProject";
 import { allInvitations } from "@/api/crew/allInvitations";
-import { useEffect, useState } from "react";
 import { ID } from "@/api/schema/id";
 import OvewviewRender from "@/components/pages/Overview";
 
 export default function Overview() {
   const { logout, user } = useAuth();
+  const queryClient = useQueryClient();
 
-  const [projects, setProjects] = useState<
-    {
-      id: ID;
-      title: string;
-      role: string;
-      endpointCount: number;
-      structureCount: number;
-      groupCount: number;
-    }[]
-  >([]);
+  const { data: projects = [], error: projectsError } = useQuery({
+    queryKey: ["projects"],
+    queryFn: projectList,
+  });
 
-  const [invitations, setInvitations] = useState<
-    {
-      projectId: ID;
-      projectName: string;
-    }[]
-  >([]);
+  const { data: invitations = [], error: invitationsError } = useQuery({
+    queryKey: ["invitations"],
+    queryFn: allInvitations,
+  });
 
-  useEffect(() => {
-    projectList()
-      .then((projects) => setProjects(projects))
-      .catch(console.error);
-  }, []);
+  const joinProjectMutation = useMutation({
+    mutationFn: ({
+      projectId,
+      username,
+    }: {
+      projectId: string;
+      username: string;
+    }) => joinProject(projectId, { username }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["projects"]);
+      queryClient.invalidateQueries(["invitations"]);
+    },
+  });
 
-  useEffect(() => {
-    allInvitations()
-      .then(({ invitations }) => setInvitations(invitations))
-      .catch(console.error);
-  }, []);
+  function handleJoinProject(projectId: ID, username: string) {
+    joinProjectMutation.mutate({ projectId, username });
+  }
 
-  async function handleJoinProject(projectId: ID, username: string) {
-    await joinProject(projectId, { username }).catch(console.error);
+  if (projectsError || invitationsError) {
+    console.error(projectsError || invitationsError);
+    return <div>Error loading data</div>;
   }
 
   return (

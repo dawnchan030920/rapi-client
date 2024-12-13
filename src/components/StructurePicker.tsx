@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { ID } from "@/api/schema/id";
 import structureList from "@/api/structure/structureList";
 import {
@@ -9,33 +10,31 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function StructureRefPicker({
-  refId,
-  onRefChanged,
+export default function StructurePicker({
+  structureId,
+  onStructureIdChanged,
 }: {
-  refId: ID;
-  onRefChanged: (id: ID) => void;
+  structureId: ID;
+  onStructureIdChanged: (id: ID) => void;
 }) {
-  const [structures, setStructures] = useState<{ id: ID; name: string }[]>([]);
-  useEffect(() => {
-    async function fetchStructures() {
-      try {
-        const data = await structureList(refId);
-        setStructures(data);
-      } catch (error) {
-        console.error("Failed to fetch structures", error);
-      }
-    }
+  const { data: structures = [], error } = useQuery({
+    queryKey: ["structures", structureId],
+    queryFn: () => structureList(structureId),
+    enabled: !!structureId,
+  });
 
-    fetchStructures();
-  }, [refId]);
+  useEffect(() => {
+    if (error) {
+      console.error("Failed to fetch structures", error);
+    }
+  }, [error]);
 
   return (
     <Select
-      onValueChange={(value) => onRefChanged(value)}
+      onValueChange={(value) => onStructureIdChanged(value)}
       value={
-        structures.map((struct) => struct.id).includes(refId)
-          ? refId
+        structures.map((struct) => struct.id).includes(structureId)
+          ? structureId
           : undefined
       }
     >
