@@ -36,42 +36,40 @@ export default function Overview({
   joinProject: (projectId: ID, username: string) => void;
 }) {
   return (
-    <div className="flex h-screen w-full p-4">
-      <>
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-start gap-4">
-            <div className="text-3xl font-semibold">Hello, {username}</div>
-            <Button onClick={logout}>Log out</Button>
-          </div>
-          <div className="flex justify-start gap-4">
-            <Select>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a fruit" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {invitations.map((invitation) => (
-                    <SelectItem
-                      key={invitation.projectId}
-                      value={invitation.projectId}
-                    >
-                      <SelectLabel>{invitation.projectName}</SelectLabel>
-                      <Button
-                        onClick={() =>
-                          joinProject(invitation.projectId, username)
-                        }
-                      >
-                        Accept
-                      </Button>
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+    <div className="flex flex-col h-screen w-full p-4 gap-4">
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-start gap-4">
+          <div className="text-3xl font-semibold">Hello, {username}</div>
+          <Button onClick={logout}>Log out</Button>
         </div>
-        <Separator />
-      </>
+        <div className="flex justify-start gap-4">
+          <Select>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Invitations" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {invitations.map((invitation) => (
+                  <SelectItem
+                    key={invitation.projectId}
+                    value={invitation.projectId}
+                  >
+                    <SelectLabel>{invitation.projectName}</SelectLabel>
+                    <Button
+                      onClick={() =>
+                        joinProject(invitation.projectId, username)
+                      }
+                    >
+                      Accept
+                    </Button>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      <Separator />
       <div className="grid grid-flow-row auto-rows-auto gap-4">
         {projects.map((project) => (
           <ProjectGridItem key={project.id} {...project} />
