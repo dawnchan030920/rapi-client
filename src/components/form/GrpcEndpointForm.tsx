@@ -74,7 +74,7 @@ export default function GrpcEndpointForm({
             />
           </div>
         </div>
-        <Tabs>
+        <Tabs defaultValue={"param"}>
           <TabsList>
             <TabsTrigger value="param">Parameter</TabsTrigger>
             <TabsTrigger value="result">Result</TabsTrigger>
