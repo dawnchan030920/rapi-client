@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import RestfulEndpointForm from "./components/form/RestfulEndpointForm";
 import GrpcEndpointForm from "./components/form/GrpcEndpointForm";
 import CrudGroupForm from "./components/form/CrudGroupForm";
+import JwtGroupForm from "./components/form/JwtGroupForm";
 
 const queryClient = new QueryClient();
 
@@ -296,7 +297,7 @@ function App() {
                     }}
                     onCanceled={() => {}}
                   /> */}
-                  <CrudGroupForm
+                  {/* <CrudGroupForm
                     group={{
                       sourceStructure: {
                         id: "1",
@@ -309,6 +310,41 @@ function App() {
                       console.log(
                         "setSourceStructure ",
                         structureId,
+                        "for project ",
+                        projectId,
+                        " and group ",
+                        groupId
+                      );
+                    }}
+                    dissolve={(projectId, groupId) => {
+                      console.log(
+                        "dissolve ",
+                        groupId,
+                        "from project ",
+                        projectId
+                      );
+                    }}
+                    onCanceled={() => {}}
+                  /> */}
+                  <JwtGroupForm
+                    projectId="1"
+                    groupId="1"
+                    group={{
+                      sourceEndpoints: [
+                        {
+                          id: "1",
+                          name: "Test Endpoint",
+                        },
+                      ],
+                    }}
+                    setSourceEndpoints={(
+                      projectId,
+                      groupId,
+                      sourceEndpoints
+                    ) => {
+                      console.log(
+                        "setSourceEndpoints ",
+                        sourceEndpoints,
                         "for project ",
                         projectId,
                         " and group ",

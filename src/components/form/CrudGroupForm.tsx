@@ -39,6 +39,7 @@ export default function CrudGroupForm({
       </CardHeader>
       <CardContent>
         <StructurePicker
+          projectId={projectId}
           structureId={structureId ?? ""}
           onStructureIdChanged={(id) => setStructureId(id)}
         />

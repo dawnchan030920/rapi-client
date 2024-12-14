@@ -6,11 +6,14 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import SchemaEditor from "../schemaEditor/SchemaEditor";
 import { produce } from "immer";
+import { ID } from "@/api/schema/id";
 
 export default function ResponsesForm({
   responses,
   setResponses,
+  projectId,
 }: {
+  projectId: ID;
   responses: { description: string; statusCode: number; schema: RapiSchema }[];
   setResponses: (
     responses: { description: string; statusCode: number; schema: RapiSchema }[]
@@ -107,6 +110,7 @@ export default function ResponsesForm({
                   }
                 />
                 <SchemaEditor
+                  projectId={projectId}
                   schema={response.schema}
                   onSchemaChange={(schema) =>
                     setResponses(

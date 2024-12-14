@@ -9,11 +9,14 @@ import {
 import ObjectEditor from "./ObjectEditor";
 import ListEditor from "./ListEditor";
 import RefEditor from "./RefEditor";
+import { ID } from "@/api/schema/id";
 
 export default function SchemaEditor({
+  projectId,
   schema,
   onSchemaChange,
 }: {
+  projectId: ID;
   schema: RapiSchema;
   onSchemaChange: (schema: RapiSchema) => void;
 }) {
@@ -49,11 +52,23 @@ export default function SchemaEditor({
        * Render the appropriate editor based on the selected schema type
        */}
       {schema.type === "object" ? (
-        <ObjectEditor fields={schema.fields} onSchemaChange={onSchemaChange} />
+        <ObjectEditor
+          fields={schema.fields}
+          onSchemaChange={onSchemaChange}
+          projectId={projectId}
+        />
       ) : schema.type === "list" ? (
-        <ListEditor item={schema.item} onSchemaChange={onSchemaChange} />
+        <ListEditor
+          item={schema.item}
+          onSchemaChange={onSchemaChange}
+          projectId={projectId}
+        />
       ) : schema.type === "ref" ? (
-        <RefEditor reference={schema.ref} onSchemaChange={onSchemaChange} />
+        <RefEditor
+          reference={schema.ref}
+          onSchemaChange={onSchemaChange}
+          projectId={projectId}
+        />
       ) : null}
     </div>
   );

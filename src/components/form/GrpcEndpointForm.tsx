@@ -101,6 +101,7 @@ export default function GrpcEndpointForm({
                   </label>
                 </div>
                 <SchemaEditor
+                  projectId={projectId}
                   schema={paramSchema}
                   onSchemaChange={setParamSchema}
                 />
@@ -129,6 +130,7 @@ export default function GrpcEndpointForm({
                   </label>
                 </div>
                 <SchemaEditor
+                  projectId={projectId}
                   schema={resultSchema}
                   onSchemaChange={setResultSchema}
                 />

@@ -10,8 +10,10 @@ import {
 import { useState } from "react";
 
 export default function CreateCrudGroupDialogContent({
+  projectId,
   createCrudGroup,
 }: {
+  projectId: ID;
   createCrudGroup: (sourceStructure: ID) => void;
 }) {
   const [sourceStructure, setSourceStructure] = useState("");
@@ -24,6 +26,7 @@ export default function CreateCrudGroupDialogContent({
         <div className="grid gap-2">
           
           <StructurePicker
+            projectId={projectId}
             structureId={sourceStructure}
             onStructureIdChanged={(sourceStructureId) =>
               setSourceStructure(sourceStructureId)

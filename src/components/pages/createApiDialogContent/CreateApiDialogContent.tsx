@@ -26,13 +26,20 @@ export default function CreateApiDialogContent({
           isResultStream: boolean
         ) => void;
       }
-    | { type: "CRUD"; createCrudGroup: (sourceStructure: ID) => void }
+    | {
+        type: "CRUD";
+        createCrudGroup: (sourceStructure: ID) => void;
+        projectId: ID;
+      }
     | { type: "STRUCTURE"; createStructure: (name: string) => void };
 }) {
   switch (api.type) {
     case "CRUD":
       return (
-        <CreateCrudGroupDialogContent createCrudGroup={api.createCrudGroup} />
+        <CreateCrudGroupDialogContent
+          projectId={api.projectId}
+          createCrudGroup={api.createCrudGroup}
+        />
       );
     case "REST":
       return (

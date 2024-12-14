@@ -9,11 +9,14 @@ import {
 import { Input } from "../ui/input";
 import SchemaEditor from "../schemaEditor/SchemaEditor";
 import { Button } from "../ui/button";
+import { ID } from "@/api/schema/id";
 
 export default function RouteForm({
+  projectId,
   route,
   setRoute,
 }: {
+  projectId: ID;
   route: (
     | { constant: string; type: "constant" }
     | { name: string; schema: RapiSchema; type: "schema" }
@@ -77,6 +80,7 @@ export default function RouteForm({
                     }}
                   />
                   <SchemaEditor
+                    projectId={projectId}
                     schema={item.schema}
                     onSchemaChange={(schema) => {
                       const newRoute = [...route];

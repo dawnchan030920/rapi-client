@@ -181,7 +181,11 @@ export default function RestfulEndpointForm({
 
           <div className="flex gap-4 items-end">
             <div className="w-[160px]">
-              <StatePicker stateId={stateId} onStateIdChanged={setStateId} />
+              <StatePicker
+                projectId={projectId}
+                stateId={stateId}
+                onStateIdChanged={setStateId}
+              />
             </div>
 
             <div className="grid gap-2 w-[400px]">
@@ -231,6 +235,7 @@ export default function RestfulEndpointForm({
 
                     {request && (
                       <SchemaEditor
+                        projectId={projectId}
                         schema={request}
                         onSchemaChange={(schema) => setRequest(schema)}
                       />
@@ -241,12 +246,17 @@ export default function RestfulEndpointForm({
             </TabsContent>
             <TabsContent value="response">
               <ResponsesForm
+                projectId={projectId}
                 responses={responses}
                 setResponses={setResponses}
               />
             </TabsContent>
             <TabsContent value="route">
-              <RouteForm route={route} setRoute={setRoute} />
+              <RouteForm
+                projectId={projectId}
+                route={route}
+                setRoute={setRoute}
+              />
             </TabsContent>
             <TabsContent value="header">
               <Card>
@@ -277,6 +287,7 @@ export default function RestfulEndpointForm({
 
                     {header && (
                       <ObjectEditor
+                        projectId={projectId}
                         fields={header.fields}
                         onSchemaChange={(schema) =>
                           setHeader(schema as RapiObjectSchema)
@@ -316,6 +327,7 @@ export default function RestfulEndpointForm({
 
                     {query && (
                       <ObjectEditor
+                        projectId={projectId}
                         fields={query.fields}
                         onSchemaChange={(schema) =>
                           setQuery(schema as RapiObjectSchema)

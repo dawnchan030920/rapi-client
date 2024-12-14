@@ -13,16 +13,17 @@ import {
 } from "@/components/ui/select";
 
 export default function StatePicker({
+  projectId,
   stateId,
   onStateIdChanged,
 }: {
+  projectId: ID;
   stateId: ID;
   onStateIdChanged: (id: ID) => void;
 }) {
   const { data: states = [], error } = useQuery({
-    queryKey: ["states", stateId],
-    queryFn: () => stateList(stateId),
-    enabled: !!stateId,
+    queryKey: ["states", projectId],
+    queryFn: () => stateList(projectId),
   });
 
   useEffect(() => {

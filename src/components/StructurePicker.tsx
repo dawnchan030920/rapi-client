@@ -13,16 +13,17 @@ import {
 } from "@/components/ui/select";
 
 export default function StructurePicker({
+  projectId,
   structureId,
   onStructureIdChanged,
 }: {
+  projectId: ID;
   structureId: ID;
   onStructureIdChanged: (id: ID) => void;
 }) {
   const { data: structures = [], error } = useQuery({
-    queryKey: ["structures", structureId],
-    queryFn: () => structureList(structureId),
-    enabled: !!structureId,
+    queryKey: ["structures", projectId],
+    queryFn: () => structureList(projectId),
   });
 
   useEffect(() => {

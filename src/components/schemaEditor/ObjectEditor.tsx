@@ -2,11 +2,14 @@ import { RapiSchema } from "@/api/schema/schema";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import SchemaEditor from "./SchemaEditor";
+import { ID } from "@/api/schema/id";
 
 export default function ObjectEditor({
   fields,
   onSchemaChange,
+  projectId,
 }: {
+  projectId: ID;
   fields: { key: string; value: RapiSchema }[];
   onSchemaChange: (schema: RapiSchema) => void;
 }) {
@@ -34,6 +37,7 @@ export default function ObjectEditor({
             }}
           />
           <SchemaEditor
+            projectId={projectId}
             schema={field.value}
             onSchemaChange={(value) => {
               onSchemaChange({
@@ -60,18 +64,17 @@ export default function ObjectEditor({
         </div>
       ))}
       <div className="w-auto">
-      <Button
-        onClick={() => {
-          onSchemaChange({
-            type: "object",
-            fields: [...fields, { key: "", value: { type: "string" } }],
-          });
-        }}
-      >
-        Add
-      </Button>
+        <Button
+          onClick={() => {
+            onSchemaChange({
+              type: "object",
+              fields: [...fields, { key: "", value: { type: "string" } }],
+            });
+          }}
+        >
+          Add
+        </Button>
       </div>
-
     </div>
   );
 }

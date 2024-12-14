@@ -155,7 +155,11 @@ export default function Project({
             isResultStream: boolean
           ) => void;
         }
-      | { type: "CRUD"; createCrudGroup: (sourceStructure: ID) => void }
+      | {
+          type: "CRUD";
+          createCrudGroup: (sourceStructure: ID) => void;
+          projectId: ID;
+        }
       | { type: "STRUCTURE"; createStructure: (name: string) => void };
   } | null>(null);
   return (
@@ -178,6 +182,7 @@ export default function Project({
                         onClick={() => {
                           setCreateApiDialogProps({
                             api: {
+                              projectId: projectId,
                               type: "CRUD",
                               createCrudGroup,
                             },
