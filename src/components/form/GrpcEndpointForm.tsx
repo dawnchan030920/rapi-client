@@ -80,50 +80,60 @@ export default function GrpcEndpointForm({
             <TabsTrigger value="result">Result</TabsTrigger>
           </TabsList>
           <TabsContent value="param">
-            <div className="grid gap-4">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="paramStream"
-                  checked={paramStream}
-                  onCheckedChange={(checked) => {
-                    setParamStream(checked === true);
-                  }}
+            <Card>
+              <CardHeader>
+                <CardTitle>Parameter</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="paramStream"
+                    checked={paramStream}
+                    onCheckedChange={(checked) => {
+                      setParamStream(checked === true);
+                    }}
+                  />
+                  <label
+                    htmlFor="paramStream"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Stream
+                  </label>
+                </div>
+                <SchemaEditor
+                  schema={paramSchema}
+                  onSchemaChange={setParamSchema}
                 />
-                <label
-                  htmlFor="paramStream"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Should parameter be a stream?
-                </label>
-              </div>
-              <SchemaEditor
-                schema={paramSchema}
-                onSchemaChange={setParamSchema}
-              />
-            </div>
+              </CardContent>
+            </Card>
           </TabsContent>
           <TabsContent value="result">
-            <div className="grid gap-4">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="resultStream"
-                  checked={resultStream}
-                  onCheckedChange={(checked) => {
-                    setResultStream(checked === true);
-                  }}
+            <Card>
+              <CardHeader>
+                <CardTitle>Result</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="resultStream"
+                    checked={resultStream}
+                    onCheckedChange={(checked) => {
+                      setResultStream(checked === true);
+                    }}
+                  />
+                  <label
+                    htmlFor="resultStream"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Stream
+                  </label>
+                </div>
+                <SchemaEditor
+                  schema={resultSchema}
+                  onSchemaChange={setResultSchema}
                 />
-                <label
-                  htmlFor="resultStream"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Should result be a stream?
-                </label>
-              </div>
-              <SchemaEditor
-                schema={resultSchema}
-                onSchemaChange={setResultSchema}
-              />
-            </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </CardContent>
