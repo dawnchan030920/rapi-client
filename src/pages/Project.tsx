@@ -204,7 +204,7 @@ export default function Project() {
         createJwtGroup={() =>
           handleCreateJwtGroup.mutate({ projectId, request: {} })
         }
-        inviteCrew={(email: string) =>
+        inviteCrew={(projectId: string, email: string) =>
           handleInviteCrew.mutate({ projectId, request: { email } })
         }
         addState={(projectId: string, name: string) =>
@@ -216,8 +216,12 @@ export default function Project() {
         changeDefaultState={(projectId: string, stateId: string) =>
           handleChangeDefaultState.mutate({ projectId, request: { stateId } })
         }
-        promoteCrew={(_projectId: string, crewId: string) => handlePromoteCrew.mutate(crewId)}
-        demoteCrew={(_projectId: string, crewId: string) => handleDemoteCrew.mutate(crewId)}
+        promoteCrew={(_projectId: string, crewId: string) =>
+          handlePromoteCrew.mutate(crewId)
+        }
+        demoteCrew={(_projectId: string, crewId: string) =>
+          handleDemoteCrew.mutate(crewId)
+        }
       />
     );
   return null;
