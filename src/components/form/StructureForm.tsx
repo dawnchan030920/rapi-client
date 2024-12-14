@@ -11,27 +11,41 @@ import SchemaEditor from "../schemaEditor/SchemaEditor";
 import { useState } from "react";
 import { RapiSchema } from "@/api/schema/schema";
 import { Button } from "../ui/button";
+import { useMutation } from "@tanstack/react-query";
+import updateStructureRemote from "@/api/structure/updateStructure";
+import deleteStructureRemote from "@/api/structure/deleteStructure";
 
 export default function StructureForm({
   projectId,
   structureId,
   structure,
-  updateStructure,
-  deleteStructure,
   onCanceled,
 }: {
   projectId: ID;
   structureId: ID;
   structure: Structure;
-  updateStructure: (
-    projectId: ID,
-    structureId: ID,
-    structure: Structure
-  ) => void;
-  deleteStructure: (projectId: ID, structureId: ID) => void;
   onCanceled: () => void;
 }) {
   const [schema, setSchema] = useState<RapiSchema>(structure.schema);
+  const updateStructureMutation = useMutation({
+    mutationFn: (newStructure: Structure) =>
+      updateStructureRemote(projectId, { ...newStructure, id: structureId }),
+    onSuccess: () => {},
+  });
+  const updateStructure = (
+    _projectId: ID,
+    _structureId: ID,
+    newStructure: Structure
+  ) => {
+    updateStructureMutation.mutate(newStructure);
+  };
+  const deleteStructureMutation = useMutation({
+    mutationFn: () => deleteStructureRemote(projectId, structureId),
+    onSuccess: () => {},
+  });
+  const deleteStructure = (_projectId: ID, _structureId: ID) => {
+    deleteStructureMutation.mutate();
+  };
   return (
     <Card>
       <CardHeader>

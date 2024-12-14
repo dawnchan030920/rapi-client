@@ -15,22 +15,40 @@ import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import SchemaEditor from "../schemaEditor/SchemaEditor";
+import { useMutation } from "@tanstack/react-query";
+import deleteGrpcEndpoint from "@/api/grpcEndpoint/deleteGrpcEndpoint";
+import updateGrpcEndpoint from "@/api/grpcEndpoint/updateGrpcEndpoint";
 
 export default function GrpcEndpointForm({
   projectId,
   endpointId,
   endpoint,
-  updateEndpoint,
-  deleteEndpoint,
   onCanceled,
 }: {
   projectId: ID;
   endpointId: ID;
   endpoint: GrpcEndpoint;
-  updateEndpoint: (projectId: ID, endpointId: ID, data: GrpcEndpoint) => void;
-  deleteEndpoint: (projectId: ID, endpointId: ID) => void;
   onCanceled: () => void;
 }) {
+  const deleteMutation = useMutation({
+    mutationFn: () => deleteGrpcEndpoint(projectId, endpointId),
+    onSuccess: () => {},
+  });
+  const deleteEndpoint = (_projectId: ID, _endpointId: ID) => {
+    deleteMutation.mutate();
+  };
+  const updateMutation = useMutation({
+    mutationFn: (data: GrpcEndpoint) =>
+      updateGrpcEndpoint(projectId, endpointId, { ...data, id: endpointId }),
+    onSuccess: () => {},
+  });
+  const updateEndpoint = (
+    _projectId: ID,
+    _endpointId: ID,
+    data: GrpcEndpoint
+  ) => {
+    updateMutation.mutate(data);
+  };
   const [name, setName] = useState(endpoint.name);
   const [description, setDescription] = useState(endpoint.description);
   const [service, setService] = useState(endpoint.service);

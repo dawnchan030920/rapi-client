@@ -26,6 +26,9 @@ import ResponsesForm from "./ResponsesForm";
 import RouteForm from "./RouteForm";
 import { Checkbox } from "../ui/checkbox";
 import ObjectEditor from "../schemaEditor/ObjectEditor";
+import { useMutation } from "@tanstack/react-query";
+import deleteRestfulEndpoint from "@/api/restfulEndpoint/deleteRestfulEndpoint";
+import updateRestfulEndpoint from "@/api/restfulEndpoint/updateRestfulEndpoint";
 
 function transformRoute(
   input: (
@@ -60,21 +63,35 @@ export default function RestfulEndpointForm({
   endpoint,
   endpointId,
   projectId,
-  deleteEndpoint,
   onCanceled,
-  updateEndpoint,
 }: {
   endpointId: ID;
   projectId: ID;
   endpoint: RestfulEndpoint;
-  deleteEndpoint: (projectId: ID, endpointId: ID) => void;
   onCanceled: () => void;
-  updateEndpoint: (
-    projectId: ID,
-    endpointId: ID,
-    endpoint: RestfulEndpoint
-  ) => void;
 }) {
+  const deleteMutation = useMutation({
+    mutationFn: () => deleteRestfulEndpoint(projectId, endpointId),
+    onSuccess: () => {},
+  });
+  const deleteEndpoint = (_projectId: ID, _endpointId: ID) => {
+    deleteMutation.mutate();
+  };
+  const updateMutation = useMutation({
+    mutationFn: (newEndpoint: RestfulEndpoint) =>
+      updateRestfulEndpoint(projectId, endpointId, {
+        ...newEndpoint,
+        id: endpointId,
+      }),
+    onSuccess: () => {},
+  });
+  const updateEndpoint = (
+    _projectId: ID,
+    _endpointId: ID,
+    newEndpoint: RestfulEndpoint
+  ) => {
+    updateMutation.mutate(newEndpoint);
+  };
   const [httpMethod, setHttpMethod] = useState<
     | "GET"
     | "POST"

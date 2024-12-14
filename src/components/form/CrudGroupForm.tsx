@@ -11,23 +11,43 @@ import StructurePicker from "../StructurePicker";
 import { useState } from "react";
 import { ID } from "@/api/schema/id";
 import { Button } from "../ui/button";
+import { useMutation } from "@tanstack/react-query";
+import setSourceStructureCrudGroup from "@/api/crudGroup/setSourceStructureCrudGroup";
+import dissolveCrudGroup from "@/api/crudGroup/dissolveCrudGroup";
 
 export default function CrudGroupForm({
   projectId,
   groupId,
   group,
-  setSourceStructure,
-  dissolve,
   onCanceled,
 }: {
   projectId: ID;
   groupId: ID;
   group: CrudGroup;
   onCanceled: () => void;
-  setSourceStructure: (projectId: ID, groupId: ID, structureId: ID) => void;
-  dissolve: (projectId: ID, groupId: ID) => void;
 }) {
   const [structureId, setStructureId] = useState(group.sourceStructure?.id);
+  const setSourceStructureMutation = useMutation({
+    mutationFn: () =>
+      setSourceStructureCrudGroup(projectId, groupId, {
+        sourceStructure: structureId ?? "",
+      }),
+    onSuccess: () => {},
+  });
+  const setSourceStructure = (
+    _projectId: ID,
+    _groupId: ID,
+    _sourceStructureId: ID
+  ) => {
+    setSourceStructureMutation.mutate();
+  };
+  const dissolveMutation = useMutation({
+    mutationFn: () => dissolveCrudGroup(projectId, groupId),
+    onSuccess: () => {},
+  });
+  const dissolve = (_projectId: ID, _groupId: ID) => {
+    dissolveMutation.mutate();
+  };
   return (
     <Card>
       <CardHeader>
