@@ -7,8 +7,13 @@ import loginFetch from "@/api/user/login";
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const queryClient = useQueryClient();
   const [user, setUser] = useState<UserProfile | undefined>(undefined);
+  const [isUserLoading, setIsUserLoading] = useState(true);
 
-  useQuery(["profile"], profile, {
+  useQuery(["profile"], {
+    queryFn: () => {
+      setIsUserLoading(true);
+      return profile();
+    },
     onSuccess: (data) => setUser(data),
     onError: () => setUser(undefined),
   });
@@ -33,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, logout, login }}>
+    <AuthContext.Provider value={{ user, logout, login, isUserLoading }}>
       {children}
     </AuthContext.Provider>
   );
