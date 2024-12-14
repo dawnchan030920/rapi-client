@@ -317,7 +317,22 @@ export default function Project({
                   >
                     <SidebarMenuItem>
                       <CollapsibleTrigger asChild>
-                        <SidebarMenuButton>
+                        <SidebarMenuButton
+                          onClick={() => {
+                            if (group.type === "JWT") {
+                              setSelectedResource({
+                                id: group.id,
+                                type: "jwt",
+                              });
+                            }
+                            if (group.type === "CRUD") {
+                              setSelectedResource({
+                                id: group.id,
+                                type: "crud",
+                              });
+                            }
+                          }}
+                        >
                           <ChevronRight className="transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                           {group.type === "CRUD" ? <Blocks /> : <Fingerprint />}
                           <span>{group.type}</span>
@@ -330,7 +345,14 @@ export default function Project({
                         <SidebarMenuSub className="mr-0 pr-0">
                           {group.endpoints.map((endpoint) => (
                             <SidebarMenuItem key={endpoint.id}>
-                              <SidebarMenuButton>
+                              <SidebarMenuButton
+                                onClick={() => {
+                                  setSelectedResource({
+                                    id: endpoint.id,
+                                    type: "restful",
+                                  });
+                                }}
+                              >
                                 <Plug />
                                 <span>{endpoint.name}</span>
                               </SidebarMenuButton>
@@ -346,7 +368,14 @@ export default function Project({
                 ))}
                 {restfulEndpoints.map((endpoint) => (
                   <SidebarMenuItem key={endpoint.id}>
-                    <SidebarMenuButton>
+                    <SidebarMenuButton
+                      onClick={() => {
+                        setSelectedResource({
+                          id: endpoint.id,
+                          type: "restful",
+                        });
+                      }}
+                    >
                       <Plug />
                       <span>{endpoint.name}</span>
                     </SidebarMenuButton>
@@ -355,7 +384,11 @@ export default function Project({
                 ))}
                 {grpcEndpoints.map((endpoint) => (
                   <SidebarMenuItem key={endpoint.id}>
-                    <SidebarMenuButton>
+                    <SidebarMenuButton
+                      onClick={() => {
+                        setSelectedResource({ id: endpoint.id, type: "grpc" });
+                      }}
+                    >
                       <SendToBack />
                       <span>{endpoint.name}</span>
                     </SidebarMenuButton>
@@ -365,7 +398,14 @@ export default function Project({
 
                 {structures.map((structure) => (
                   <SidebarMenuItem key={structure.id}>
-                    <SidebarMenuButton>
+                    <SidebarMenuButton
+                      onClick={() =>
+                        setSelectedResource({
+                          id: structure.id,
+                          type: "structure",
+                        })
+                      }
+                    >
                       <Boxes />
                       <span>{structure.name}</span>
                     </SidebarMenuButton>
