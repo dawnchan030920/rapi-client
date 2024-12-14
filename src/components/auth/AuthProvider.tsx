@@ -14,8 +14,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsUserLoading(true);
       return profile();
     },
-    onSuccess: (data) => setUser(data),
-    onError: () => setUser(undefined),
+    onSuccess: (data) => {
+      setUser(data);
+      setIsUserLoading(false);
+    },
+    onError: () => {
+      setUser(undefined);
+      setIsUserLoading(false);
+    },
   });
 
   const logout = () => {
