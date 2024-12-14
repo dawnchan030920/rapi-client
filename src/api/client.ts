@@ -1,10 +1,7 @@
 import axios from "axios";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const client = axios.create({
-  baseURL: process.env.BASE_URL,
+  baseURL: import.meta.env.BASE_URL,
 });
 
 client.interceptors.request.use(
