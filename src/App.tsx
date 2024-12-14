@@ -10,6 +10,7 @@ import ProjectRender from "./components/pages/Project";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import RestfulEndpointForm from "./components/form/RestfulEndpointForm";
 import GrpcEndpointForm from "./components/form/GrpcEndpointForm";
+import CrudGroupForm from "./components/form/CrudGroupForm";
 
 const queryClient = new QueryClient();
 
@@ -257,7 +258,7 @@ function App() {
                     projectId="1"
                     endpointId="1"
                   /> */}
-                  <GrpcEndpointForm
+                  {/* <GrpcEndpointForm
                     endpoint={{
                       name: "Test gRPC",
                       service: "Test Service",
@@ -289,6 +290,35 @@ function App() {
                       console.log(
                         "deleteEndpoint ",
                         endpointId,
+                        "from project ",
+                        projectId
+                      );
+                    }}
+                    onCanceled={() => {}}
+                  /> */}
+                  <CrudGroupForm
+                    group={{
+                      sourceStructure: {
+                        id: "1",
+                        name: "Test Structure",
+                      },
+                    }}
+                    projectId="1"
+                    groupId="1"
+                    setSourceStructure={(projectId, groupId, structureId) => {
+                      console.log(
+                        "setSourceStructure ",
+                        structureId,
+                        "for project ",
+                        projectId,
+                        " and group ",
+                        groupId
+                      );
+                    }}
+                    dissolve={(projectId, groupId) => {
+                      console.log(
+                        "dissolve ",
+                        groupId,
                         "from project ",
                         projectId
                       );
