@@ -27,7 +27,6 @@ export default function ProjectGridItem({
     mutationFn: () => disband(id),
     onSuccess: () => {
       queryClient.invalidateQueries(["projects"]);
-      window.location.reload();
     },
     onError: (error) => {
       console.error(error);
