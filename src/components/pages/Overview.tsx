@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import ProjectGridItem from "../ProjectGridItem";
+import { useState } from "react";
 
 export default function Overview({
   logout,
@@ -35,6 +36,10 @@ export default function Overview({
   }[];
   joinProject: (projectId: ID, username: string) => void;
 }) {
+  const [selectedProjectId, setSelectedProjectId] = useState<ID | undefined>(
+    undefined
+  );
+
   return (
     <div className="flex flex-col h-screen w-full p-4 gap-4">
       <div className="flex flex-col gap-4">
@@ -43,7 +48,10 @@ export default function Overview({
           <Button onClick={logout}>Log out</Button>
         </div>
         <div className="flex justify-start gap-4">
-          <Select>
+          <Select
+            value={selectedProjectId}
+            onValueChange={setSelectedProjectId}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Invitations" />
             </SelectTrigger>
@@ -55,18 +63,18 @@ export default function Overview({
                     value={invitation.projectId}
                   >
                     <SelectLabel>{invitation.projectName}</SelectLabel>
-                    <Button
-                      onClick={() =>
-                        joinProject(invitation.projectId, username)
-                      }
-                    >
-                      Accept
-                    </Button>
                   </SelectItem>
                 ))}
               </SelectGroup>
             </SelectContent>
           </Select>
+          <Button
+            onClick={() =>
+              selectedProjectId && joinProject(selectedProjectId, username)
+            }
+          >
+            Join
+          </Button>
         </div>
       </div>
       <Separator />
