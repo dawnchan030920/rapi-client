@@ -55,17 +55,15 @@ import GrpcEndpointForm from "../form/GrpcEndpointForm";
 import JwtGroupForm from "../form/JwtGroupForm";
 import StructureForm from "../form/StructureForm";
 import CrudGroupForm from "../form/CrudGroupForm";
-import { Structure } from "@/api/structure/structure";
-import { CrudGroup } from "@/api/crudGroup/crudGroup";
-import { GrpcEndpoint } from "@/api/grpcEndpoint/grpcEndpoint";
-import { JwtGroup } from "@/api/jwtGroup/jwtGroup";
-import { RestfulEndpoint } from "@/api/restfulEndpoint/restfulEndpoint";
 import restfulEndpointDetail from "@/api/restfulEndpoint/restfulEndpointDetail";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import grpcEndpointDetail from "@/api/grpcEndpoint/grpcEndpointDetail";
 import jwtGroupDetail from "@/api/jwtGroup/jwtGroupDetail";
 import crudGroupDetail from "@/api/crudGroup/crudGroupDetail";
 import structureDetail from "@/api/structure/structureDetail";
+import DiscussionPanel from "../DiscussionPanel";
+import { allConversations } from "@/api/discussion/allConversations";
+import conversationDetail from "@/api/discussion/conversationDetail";
 
 type RestfulEndpointOverview = {
   id: ID;
@@ -184,6 +182,28 @@ export default function Project({
     queryFn: () =>
       selectedResource && structureDetail(projectId, selectedResource.id),
     enabled: selectedResource && selectedResource.type === "structure",
+  });
+  const { data: conversations } = useQuery({
+    queryKey: ["conversations", selectedResource?.id],
+    queryFn: async () => {
+      if (!selectedResource) return [];
+      const conversations = await allConversations(selectedResource?.id);
+      return await Promise.all(
+        conversations.map(async (conversation) => {
+          const comments = await conversationDetail(
+            selectedResource.id,
+            conversation.id
+          );
+          return {
+            ...conversation,
+            comments: comments.comments,
+          };
+        })
+      );
+    },
+    enabled:
+      selectedResource &&
+      (selectedResource.type === "restful" || selectedResource.type === "grpc"),
   });
   const [createApiDialogProps, setCreateApiDialogProps] = useState<{
     api:
@@ -514,59 +534,66 @@ export default function Project({
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-      <main>
+      <main className="grid p-8 gap-4">
         <SidebarTrigger />
-        <div>
-          {selectedResource &&
-            selectedResource.type === "restful" &&
-            selectedRestfulEndpoint && (
-              <RestfulEndpointForm
-                endpoint={selectedRestfulEndpoint}
-                endpointId={selectedResource.id}
-                projectId={projectId}
-                onCanceled={() => setSelectedResource(undefined)}
-              />
-            )}
-          {selectedResource &&
-            selectedResource.type === "grpc" &&
-            selectedGrpcEndpoint && (
-              <GrpcEndpointForm
-                endpoint={selectedGrpcEndpoint}
-                endpointId={selectedResource.id}
-                projectId={projectId}
-                onCanceled={() => setSelectedResource(undefined)}
-              />
-            )}
-          {selectedResource &&
-            selectedResource.type === "jwt" &&
-            selectedJwtGroup && (
-              <JwtGroupForm
-                group={selectedJwtGroup}
-                groupId={selectedResource.id}
-                projectId={projectId}
-                onCanceled={() => setSelectedResource(undefined)}
-              />
-            )}
-          {selectedResource &&
-            selectedResource.type === "crud" &&
-            selectedCrudGroup && (
-              <CrudGroupForm
-                group={selectedCrudGroup}
-                groupId={selectedResource.id}
-                projectId={projectId}
-                onCanceled={() => setSelectedResource(undefined)}
-              />
-            )}
-          {selectedResource &&
-            selectedResource.type === "structure" &&
-            selectedStructure && (
-              <StructureForm
-                structure={selectedStructure}
-                structureId={selectedResource.id}
-                projectId={projectId}
-                onCanceled={() => setSelectedResource(undefined)}
-              />
-            )}
+        <div className="flex gap-4">
+          <div className="flex-1">
+            {selectedResource &&
+              selectedResource.type === "restful" &&
+              selectedRestfulEndpoint && (
+                <RestfulEndpointForm
+                  endpoint={selectedRestfulEndpoint}
+                  endpointId={selectedResource.id}
+                  projectId={projectId}
+                  onCanceled={() => setSelectedResource(undefined)}
+                />
+              )}
+            {selectedResource &&
+              selectedResource.type === "grpc" &&
+              selectedGrpcEndpoint && (
+                <GrpcEndpointForm
+                  endpoint={selectedGrpcEndpoint}
+                  endpointId={selectedResource.id}
+                  projectId={projectId}
+                  onCanceled={() => setSelectedResource(undefined)}
+                />
+              )}
+            {selectedResource &&
+              selectedResource.type === "jwt" &&
+              selectedJwtGroup && (
+                <JwtGroupForm
+                  group={selectedJwtGroup}
+                  groupId={selectedResource.id}
+                  projectId={projectId}
+                  onCanceled={() => setSelectedResource(undefined)}
+                />
+              )}
+            {selectedResource &&
+              selectedResource.type === "crud" &&
+              selectedCrudGroup && (
+                <CrudGroupForm
+                  group={selectedCrudGroup}
+                  groupId={selectedResource.id}
+                  projectId={projectId}
+                  onCanceled={() => setSelectedResource(undefined)}
+                />
+              )}
+            {selectedResource &&
+              selectedResource.type === "structure" &&
+              selectedStructure && (
+                <StructureForm
+                  structure={selectedStructure}
+                  structureId={selectedResource.id}
+                  projectId={projectId}
+                  onCanceled={() => setSelectedResource(undefined)}
+                />
+              )}
+          </div>
+          {conversations && (
+            <div>
+              <DiscussionPanel conversations={conversations} />
+            </div>
+          )}
         </div>
       </main>
     </SidebarProvider>

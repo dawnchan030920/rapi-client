@@ -12,6 +12,7 @@ import RestfulEndpointForm from "./components/form/RestfulEndpointForm";
 import GrpcEndpointForm from "./components/form/GrpcEndpointForm";
 import CrudGroupForm from "./components/form/CrudGroupForm";
 import JwtGroupForm from "./components/form/JwtGroupForm";
+import DiscussionPanel from "./components/DiscussionPanel";
 
 const queryClient = new QueryClient();
 
@@ -326,7 +327,7 @@ function App() {
                     }}
                     onCanceled={() => {}}
                   /> */}
-                  <JwtGroupForm
+                  {/* <JwtGroupForm
                     projectId="1"
                     groupId="1"
                     group={{
@@ -360,6 +361,80 @@ function App() {
                       );
                     }}
                     onCanceled={() => {}}
+                  /> */}
+                  <DiscussionPanel
+                    addConversation={(title) => {
+                      console.log("addConversation ", title);
+                    }}
+                    postComment={(conversationId, content) => {
+                      console.log(
+                        "postComment ",
+                        content,
+                        "for conversation ",
+                        conversationId
+                      );
+                    }}
+                    closeConversation={(conversationId) => {
+                      console.log("closeConversation ", conversationId);
+                    }}
+                    reopenConversation={(conversationId) => {
+                      console.log("reopenConversation ", conversationId);
+                    }}
+                    conversations={[
+                      {
+                        id: "1",
+                        title: "Test Conversation",
+                        open: true,
+                        comments: [
+                          {
+                            id: "1",
+                            content: "Test Comment",
+                            author: "Test Author",
+                          },
+                        ],
+                      },
+                      {
+                        id: "2",
+                        title: "Test Conversation 2",
+                        open: false,
+                        comments: [
+                          {
+                            id: "2",
+                            content: "Test Comment 2",
+                            author: "Test Author 2",
+                          },
+                        ],
+                      },
+                      {
+                        id: "3",
+                        title: "Test Conversation 3",
+                        open: true,
+                        comments: [
+                          {
+                            id: "3",
+                            content: "Test Comment 3",
+                            author: "Test Author 3",
+                          },
+                        ],
+                      },
+                      {
+                        id: "4",
+                        title: "Test Conversation 4",
+                        open: false,
+                        comments: [
+                          {
+                            id: "4",
+                            content: "Test Comment 4",
+                            author: "Test Author 4",
+                          },
+                          {
+                            id: "5",
+                            content: "Test Comment 5",
+                            author: "Test Author 5",
+                          }
+                        ],
+                      }
+                    ]}
                   />
                 </>
               }
