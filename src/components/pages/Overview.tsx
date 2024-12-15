@@ -12,6 +12,15 @@ import {
 import { Separator } from "@/components/ui/separator";
 import ProjectGridItem from "../ProjectGridItem";
 import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { Input } from "../ui/input";
 
 export default function Overview({
   logout,
@@ -19,6 +28,7 @@ export default function Overview({
   projects,
   invitations,
   joinProject,
+  createProject,
 }: {
   logout: () => void;
   username: string;
@@ -35,10 +45,12 @@ export default function Overview({
     projectName: string;
   }[];
   joinProject: (projectId: ID, username: string) => void;
+  createProject: (name: string) => void;
 }) {
   const [selectedProjectId, setSelectedProjectId] = useState<ID | undefined>(
     undefined
   );
+  const [newProjectName, setNewProjectName] = useState("");
 
   return (
     <div className="flex flex-col h-screen w-full p-4 gap-4">
@@ -75,10 +87,34 @@ export default function Overview({
           >
             Join
           </Button>
+          <Dialog>
+            <DialogTrigger>
+              <Button>Create Project</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Create Project</DialogTitle>
+              </DialogHeader>
+              <div className="grid gap-4">
+                <Input
+                  value={newProjectName}
+                  onChange={(e) => {
+                    setNewProjectName(e.target.value);
+                  }}
+                  placeholder="Project name"
+                />
+              </div>
+              <DialogFooter>
+                <Button onClick={() => createProject(newProjectName)}>
+                  Create
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
       <Separator />
-      <div className="grid grid-flow-row auto-rows-auto gap-4">
+      <div className="flex flex-wrap gap-4">
         {projects.map((project) => (
           <ProjectGridItem key={project.id} {...project} />
         ))}

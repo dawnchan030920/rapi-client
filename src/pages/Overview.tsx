@@ -5,6 +5,7 @@ import { joinProject } from "@/api/crew/joinProject";
 import { allInvitations } from "@/api/crew/allInvitations";
 import { ID } from "@/api/schema/id";
 import OvewviewRender from "@/components/pages/Overview";
+import createProjectRemote from "@/api/project/createProject";
 
 export default function Overview() {
   const { logout, user } = useAuth();
@@ -38,6 +39,17 @@ export default function Overview() {
     joinProjectMutation.mutate({ projectId, username });
   }
 
+  const createProjectMutation = useMutation({
+    mutationFn: (name: string) => createProjectRemote({ name }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["projects"]);
+    },
+  })
+
+  function handleCreateProject(name: string) {
+    createProjectMutation.mutate(name);
+  }
+
   if (projectsError || invitationsError) {
     console.error(projectsError || invitationsError);
     return <div>Error loading data</div>;
@@ -51,6 +63,7 @@ export default function Overview() {
         projects={projects}
         invitations={invitations}
         joinProject={handleJoinProject}
+        createProject={(name) => handleCreateProject(name)}
       />
     )
   );
