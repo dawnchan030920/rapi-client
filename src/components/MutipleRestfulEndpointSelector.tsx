@@ -16,9 +16,9 @@ export default function MultipleRestfulEndpointSelector({
     queryKey: ["restfulEndpoints", projectId],
     queryFn: () => restfulEndpointList(projectId),
   });
-  return (
+  if (data) return (
     <MultipleSelector
-      defaultOptions={data?.map(({ id, name }) => {
+      defaultOptions={data.map(({ id, name }) => {
         return { label: name, value: id };
       })}
       value={endpoints.map(({ id, name }) => {
