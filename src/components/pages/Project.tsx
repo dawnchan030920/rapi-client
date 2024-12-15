@@ -589,11 +589,17 @@ export default function Project({
                 />
               )}
           </div>
-          {conversations && (
-            <div>
-              <DiscussionPanel conversations={conversations} />
-            </div>
-          )}
+          {conversations &&
+            selectedResource &&
+            (selectedResource.type === "restful" ||
+              selectedResource.type === "grpc") && (
+              <div>
+                <DiscussionPanel
+                  conversations={conversations}
+                  endpointId={selectedResource.id}
+                />
+              </div>
+            )}
         </div>
       </main>
     </SidebarProvider>
