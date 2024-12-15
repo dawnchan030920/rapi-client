@@ -6,6 +6,7 @@ import {
   SidebarGroupAction,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarInset,
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuBadge,
@@ -534,74 +535,78 @@ export default function Project({
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-      <main className="grid p-8 gap-4">
-        <SidebarTrigger />
-        <div className="flex gap-4">
-          <div className="flex-1">
-            {selectedResource &&
-              selectedResource.type === "restful" &&
-              selectedRestfulEndpoint && (
-                <RestfulEndpointForm
-                  endpoint={selectedRestfulEndpoint}
-                  endpointId={selectedResource.id}
-                  projectId={projectId}
-                  onCanceled={() => setSelectedResource(undefined)}
-                />
-              )}
-            {selectedResource &&
-              selectedResource.type === "grpc" &&
-              selectedGrpcEndpoint && (
-                <GrpcEndpointForm
-                  endpoint={selectedGrpcEndpoint}
-                  endpointId={selectedResource.id}
-                  projectId={projectId}
-                  onCanceled={() => setSelectedResource(undefined)}
-                />
-              )}
-            {selectedResource &&
-              selectedResource.type === "jwt" &&
-              selectedJwtGroup && (
-                <JwtGroupForm
-                  group={selectedJwtGroup}
-                  groupId={selectedResource.id}
-                  projectId={projectId}
-                  onCanceled={() => setSelectedResource(undefined)}
-                />
-              )}
-            {selectedResource &&
-              selectedResource.type === "crud" &&
-              selectedCrudGroup && (
-                <CrudGroupForm
-                  group={selectedCrudGroup}
-                  groupId={selectedResource.id}
-                  projectId={projectId}
-                  onCanceled={() => setSelectedResource(undefined)}
-                />
-              )}
-            {selectedResource &&
-              selectedResource.type === "structure" &&
-              selectedStructure && (
-                <StructureForm
-                  structure={selectedStructure}
-                  structureId={selectedResource.id}
-                  projectId={projectId}
-                  onCanceled={() => setSelectedResource(undefined)}
-                />
+      <SidebarInset>
+        <main>
+          <div className="p-4">
+            <SidebarTrigger />
+          </div>
+          <div className="flex gap-4 px-4">
+            <div className="flex-1">
+              {selectedResource &&
+                selectedResource.type === "restful" &&
+                selectedRestfulEndpoint && (
+                  <RestfulEndpointForm
+                    endpoint={selectedRestfulEndpoint}
+                    endpointId={selectedResource.id}
+                    projectId={projectId}
+                    onCanceled={() => setSelectedResource(undefined)}
+                  />
+                )}
+              {selectedResource &&
+                selectedResource.type === "grpc" &&
+                selectedGrpcEndpoint && (
+                  <GrpcEndpointForm
+                    endpoint={selectedGrpcEndpoint}
+                    endpointId={selectedResource.id}
+                    projectId={projectId}
+                    onCanceled={() => setSelectedResource(undefined)}
+                  />
+                )}
+              {selectedResource &&
+                selectedResource.type === "jwt" &&
+                selectedJwtGroup && (
+                  <JwtGroupForm
+                    group={selectedJwtGroup}
+                    groupId={selectedResource.id}
+                    projectId={projectId}
+                    onCanceled={() => setSelectedResource(undefined)}
+                  />
+                )}
+              {selectedResource &&
+                selectedResource.type === "crud" &&
+                selectedCrudGroup && (
+                  <CrudGroupForm
+                    group={selectedCrudGroup}
+                    groupId={selectedResource.id}
+                    projectId={projectId}
+                    onCanceled={() => setSelectedResource(undefined)}
+                  />
+                )}
+              {selectedResource &&
+                selectedResource.type === "structure" &&
+                selectedStructure && (
+                  <StructureForm
+                    structure={selectedStructure}
+                    structureId={selectedResource.id}
+                    projectId={projectId}
+                    onCanceled={() => setSelectedResource(undefined)}
+                  />
+                )}
+            </div>
+            {conversations &&
+              selectedResource &&
+              (selectedResource.type === "restful" ||
+                selectedResource.type === "grpc") && (
+                <div>
+                  <DiscussionPanel
+                    conversations={conversations}
+                    endpointId={selectedResource.id}
+                  />
+                </div>
               )}
           </div>
-          {conversations &&
-            selectedResource &&
-            (selectedResource.type === "restful" ||
-              selectedResource.type === "grpc") && (
-              <div>
-                <DiscussionPanel
-                  conversations={conversations}
-                  endpointId={selectedResource.id}
-                />
-              </div>
-            )}
-        </div>
-      </main>
+        </main>
+      </SidebarInset>
     </SidebarProvider>
   );
 }

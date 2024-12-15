@@ -14,7 +14,13 @@ import CrudGroupForm from "./components/form/CrudGroupForm";
 import JwtGroupForm from "./components/form/JwtGroupForm";
 import DiscussionPanel from "./components/DiscussionPanel";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+});
 
 function App() {
   return (
@@ -431,9 +437,9 @@ function App() {
                             id: "5",
                             content: "Test Comment 5",
                             author: "Test Author 5",
-                          }
+                          },
                         ],
-                      }
+                      },
                     ]}
                   />
                 </>

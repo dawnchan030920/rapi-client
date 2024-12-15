@@ -1,5 +1,5 @@
 import { ID } from "@/api/schema/id";
-import { Card, CardContent, CardFooter } from "./ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import disband from "@/api/project/disband";
@@ -35,10 +35,12 @@ export default function ProjectGridItem({
 
   return (
     <Card className="w-[360px]">
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{role}</CardDescription>
+      </CardHeader>
       <CardContent>
-        <div className="text-lg font-semibold">{title}</div>
-        <div className="text-sm">{role}</div>
-        <div className="grid grid-cols-3 gap-2 mt-2">
+        <div className="grid grid-cols-3 gap-2">
           <div className="text-sm text-gray-500">
             {endpointCount} endpoint{endpointCount !== 1 ? "s" : ""}
           </div>

@@ -19,7 +19,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { newConversation } from "@/api/discussion/newConversation";
 import { postComment as postCommentRemote } from "@/api/discussion/postComment";
 import { changeConversationState as changeConversationStateRemote } from "@/api/discussion/changeConversationState";
@@ -48,10 +48,14 @@ export default function DiscussionPanel({
   // closeConversation: (conversationId: ID) => void;
   // reopenConversation: (conversationId: ID) => void;
 }) {
+  const queryClient = useQueryClient();
   const addConversationMutation = useMutation({
     mutationKey: ["addConversation", endpointId],
     mutationFn: (title: string) => {
       newConversation(endpointId, { title });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["conversations", endpointId]);
     },
   });
   const addConversation = (title: string) => {
@@ -68,6 +72,9 @@ export default function DiscussionPanel({
     }) => {
       postCommentRemote(endpointId, conversationId, { content });
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["conversations", endpointId]);
+    },
   });
   const changeConversationStatusMutation = useMutation({
     mutationKey: ["changeConversationStatus", endpointId],
@@ -79,6 +86,9 @@ export default function DiscussionPanel({
       action: "close" | "reopen";
     }) => {
       changeConversationStateRemote(endpointId, conversationId, { action });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["conversations", endpointId]);
     },
   });
   const closeConversation = (conversationId: ID) => {
@@ -102,7 +112,7 @@ export default function DiscussionPanel({
   const [newConversationTitle, setNewConversationTitle] = useState("");
   const [commentContent, setCommentContent] = useState("");
   return (
-    <Card>
+    <Card className="w-96">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Discussion</span>{" "}
@@ -171,7 +181,7 @@ export default function DiscussionPanel({
         <Button
           onClick={() => {
             if (conversationId) {
-              postComment(conversationId, "content");
+              postComment(conversationId, commentContent);
               setCommentContent("");
             }
           }}

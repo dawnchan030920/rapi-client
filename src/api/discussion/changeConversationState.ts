@@ -22,8 +22,8 @@ export const changeConversationState = async (
   request: ChangeConversationStateRequest
 ): Promise<ChangeConversationStateResponse> => {
   changeConversationStateRequest.parse(request);
-  const response = await client.patch(
-    `/discussion/${endpointId}/conversation/${conversationId}`,
+  const response = await client.post(
+    `/discussion/${endpointId}/conversation/${conversationId}/state`,
     request
   );
   return changeConversationStateResponse.parse(response.data);
